@@ -1,12 +1,12 @@
 [package]
-name = "solana-fall-transfer-hook"
+name = "token-mover"
 version = "0.1.0"
 description = "Created with Anchor"
 edition = "2021"
 
 [lib]
 crate-type = ["cdylib", "lib"]
-name = "solana_fall_transfer_hook"
+name = "token_mover"
 
 [features]
 default = []
@@ -19,15 +19,4 @@ idl-build = ["anchor-lang/idl-build", "anchor-spl/idl-build"]
 [dependencies]
 anchor-lang = "1.2.0"
 anchor-spl = "1.2.0"
-spl-tlv-account-resolution = "0.11.3"
-spl-discriminator = "0.5.2"
 spl-transfer-hook-interface = "2.1.0"
-
-[dev-dependencies]
-litesvm = "0.16.0"
-solana-message = "4.4.1"
-solana-transaction = "4.1.6"
-solana-signer = "3.0.1"
-solana-keypair = "3.1.2"
-solana-pubkey = "4.2.1"
-token-mover = { path = "../token-mover", features = ["no-entrypoint"] }

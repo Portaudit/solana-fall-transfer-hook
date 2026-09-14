@@ -17,6 +17,7 @@ use {
     solana_pubkey::Pubkey,
     solana_signer::Signer,
     solana_transaction::versioned::VersionedTransaction,
+    token_mover, // CHALLENGE 4: Import token_mover
 };
 
 pub fn setup() -> (LiteSVM, Keypair, Address) {
@@ -24,6 +25,10 @@ pub fn setup() -> (LiteSVM, Keypair, Address) {
     let mut svm = LiteSVM::new();
     let bytes = include_bytes!("../../../../target/deploy/solana_fall_transfer_hook.so");
     svm.add_program(program_id, bytes).unwrap();
+
+    // CHALLENGE 4: Load the token-mover program
+    let mover_bytes = include_bytes!("../../../../target/deploy/token_mover.so");
+    svm.add_program(token_mover::id(), mover_bytes).unwrap();
 
     let payer = Keypair::new();
     svm.airdrop(&payer.pubkey(), 1_000_000_000).unwrap();
