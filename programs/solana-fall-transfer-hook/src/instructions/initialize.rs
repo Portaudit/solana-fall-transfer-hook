@@ -7,7 +7,6 @@ use crate::{ANCHOR_DISCRIMINATOR_SIZE, RateLimit, error::ErrorCode};
 pub struct Initialize<'info> {
     #[account(mut)]
     pub payer: Signer<'info>,
-    // CHALLENGE 1: Add the mint to the context
     pub mint: InterfaceAccount<'info, Mint>,
     #[account(
         init,
@@ -21,7 +20,6 @@ pub struct Initialize<'info> {
 }
 
 pub fn handler(ctx: Context<Initialize>) -> Result<()> {
-    // CHALLENGE 1: Check who owns the mint (must be Token-2022)
     require!(
         ctx.accounts.mint.to_account_info().owner == &token_2022::ID,
         ErrorCode::InvalidMint
@@ -29,6 +27,7 @@ pub fn handler(ctx: Context<Initialize>) -> Result<()> {
 
     ctx.accounts.rate_limit.set_inner(RateLimit {
         authority: ctx.accounts.payer.key(),
+        mint: ctx.accounts.mint.key(), // CHALLENGE 2: Set the mint
         max_amount: RateLimit::MAX_AMOUNT,
         window_start: Clock::get()?.unix_timestamp,
         amount_transferred: 0,
